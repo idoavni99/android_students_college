@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Stundens Manager</string>
+    <string name="view_student_title">Student Details</string>
+    <string name="add_student_title">Add Student</string>
+    <string name="edit_student_title">Edit Student</string>
+</resources>
