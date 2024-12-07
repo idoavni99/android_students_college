@@ -13,4 +13,158 @@
         android:background="?attr/colorPrimary"
         app:titleTextColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/details_image"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:src="@drawable/empty_profile_picture"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_layout"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/details_image"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="name:"
+            android:id="@+id/details_name_description"
+            app:layout_constraintTop_toTopOf="@id/details_layout"
+            app:layout_constraintBottom_toBottomOf="@id/student_details_name"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <EditText
+            android:id="@+id/student_details_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="128dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:layout_constraintTop_toTopOf="@id/details_layout"
+            app:layout_constraintStart_toEndOf="@id/details_name_description"
+            android:inputType="text"
+            android:hint="Student Name"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="id:"
+            android:id="@+id/details_id_description"
+            app:layout_constraintTop_toBottomOf="@id/details_name_description"
+            app:layout_constraintBottom_toBottomOf="@id/student_details_id"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <EditText
+            android:id="@+id/student_details_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="128dp"
+            app:layout_constraintTop_toBottomOf="@id/details_name_description"
+            app:layout_constraintStart_toEndOf="@id/details_id_description"
+            android:inputType="number"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="Student Id"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="phone:"
+            android:id="@+id/details_phone_description"
+            app:layout_constraintTop_toBottomOf="@id/details_id_description"
+            app:layout_constraintBottom_toBottomOf="@id/student_details_phone"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <EditText
+            android:id="@+id/student_details_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:minWidth="128dp"
+            app:layout_constraintTop_toBottomOf="@id/details_id_description"
+            app:layout_constraintStart_toEndOf="@id/details_phone_description"
+            android:inputType="phone"
+            android:hint="Student Phone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="address:"
+            android:id="@+id/details_address_description"
+            app:layout_constraintTop_toBottomOf="@id/details_phone_description"
+            app:layout_constraintBottom_toBottomOf="@id/student_details_address"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <EditText
+            android:id="@+id/student_details_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="128dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:layout_constraintTop_toBottomOf="@id/details_phone_description"
+            app:layout_constraintStart_toEndOf="@id/details_address_description"
+            android:inputType="textEmailAddress"
+            android:hint="Student Address"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/details_address_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/details_checkbox"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/details_checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_address_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="checked"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:id="@+id/details_edit_button"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_student_actions"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/details_cancel_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/details_delete_button"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/details_delete_button"
+            app:layout_constraintStart_toEndOf="@id/details_cancel_button"
+            app:layout_constraintEnd_toStartOf="@id/details_save_button"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/details_save_button"
+            app:layout_constraintStart_toEndOf="@id/details_delete_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

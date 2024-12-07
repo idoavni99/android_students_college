@@ -2,19 +2,37 @@ package com.example.stundensmanager
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.stundensmanager.enums.StudentDeatilsMode
 import com.example.stundensmanager.models.StudentModel
+import com.example.stundensmanager.models.StudentsDataHolder
 
 class StudentDetailsActivity : AppCompatActivity() {
-    lateinit var currentStudent: StudentModel;
-    lateinit var mode: StudentDeatilsMode;
+    private val currentStudent: StudentModel? by lazy {
+        StudentsDataHolder.getStudentByIndex(intent.getIntExtra("student_index", -1))
+    }
+    private lateinit var currentMode: StudentDeatilsMode
+    private val idTextView by lazy { findViewById<EditText>(R.id.student_details_id) }
+    private val nameTextView by lazy { findViewById<EditText>(R.id.student_details_name) }
+    private val phoneTextView by lazy { findViewById<EditText>(R.id.student_details_phone) }
+    private val addressTextView by lazy { findViewById<EditText>(R.id.student_details_address) }
+    private val checkBox by lazy { findViewById<CheckBox>(R.id.details_checkbox) }
+
+    private val actionsBar by lazy { findViewById<View>(R.id.edit_student_actions) }
+    private val editButton by lazy { findViewById<Button>(R.id.details_edit_button) }
+    private val cancelButton by lazy { findViewById<Button>(R.id.details_cancel_button) }
+    private val deleteButton by lazy { findViewById<Button>(R.id.details_delete_button) }
+    private val saveButton by lazy { findViewById<Button>(R.id.details_save_button) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initBundleParams(intent.extras)
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_student_details)
@@ -24,35 +42,103 @@ class StudentDetailsActivity : AppCompatActivity() {
             insets
         }
         initToolbar()
+        handleModeSwitch(intent.getSerializableExtra("mode") as StudentDeatilsMode)
+        setupActions()
     }
 
-    private fun initBundleParams(bundle: Bundle?) {
-        bundle?.let {
-            it.get("mode")?.let {
-                mode = it as StudentDeatilsMode
+    private fun setupInputFields(
+        studentData: StudentModel? = null,
+        currentMode: StudentDeatilsMode
+    ) {
+        idTextView.setText(studentData?.id?.toString() ?: "")
+        nameTextView.setText(studentData?.name ?: "")
+        phoneTextView.setText(studentData?.phone ?: "")
+        addressTextView.setText(studentData?.email ?: "")
+        checkBox.isChecked = studentData?.checked ?: false
+        val focusable =
+            currentMode == StudentDeatilsMode.VIEW
+
+        idTextView.isFocusableInTouchMode = focusable
+        nameTextView.isFocusableInTouchMode = focusable
+        phoneTextView.isFocusableInTouchMode = focusable
+        addressTextView.isFocusableInTouchMode = focusable
+
+        idTextView.isFocusable = focusable
+        nameTextView.isFocusable = focusable
+        phoneTextView.isFocusable = focusable
+        addressTextView.isFocusable = focusable
+    }
+
+    private fun setupActions() {
+        editButton?.setOnClickListener {
+            handleModeSwitch(StudentDeatilsMode.EDIT)
+        }
+        cancelButton?.setOnClickListener {
+            finish()
+        }
+        deleteButton?.setOnClickListener {
+            currentStudent?.let { student -> StudentsDataHolder.deleteStudent(student) }
+            finish()
+        }
+        saveButton?.setOnClickListener {
+            if (currentMode == StudentDeatilsMode.ADD) {
+                StudentsDataHolder.addStudent(getStudentFromInputs())
+            } else if (currentMode == StudentDeatilsMode.EDIT) {
+                StudentsDataHolder.editStudent(getStudentFromInputs())
             }
-            it.get("student")?.let {
-                currentStudent = it as StudentModel
-            }
+            finish()
         }
     }
 
     private fun initToolbar() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
-            title = when (mode) {
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    private fun setToolbarTitle(newMode: StudentDeatilsMode) {
+        supportActionBar?.apply {
+            title = when (newMode) {
                 StudentDeatilsMode.ADD -> getString(R.string.add_student_title)
                 StudentDeatilsMode.EDIT -> getString(R.string.edit_student_title)
                 StudentDeatilsMode.VIEW -> getString(R.string.view_student_title)
             }
-            setDisplayHomeAsUpEnabled(true)
-
         }
     }
 
+    private fun handleModeSwitch(newMode: StudentDeatilsMode) {
+        currentMode = newMode
+        setToolbarTitle(newMode)
+
+        when (newMode) {
+            StudentDeatilsMode.VIEW -> {
+                findViewById<View>(R.id.edit_student_actions)?.apply { visibility = View.GONE }
+                editButton.apply { visibility = View.VISIBLE }
+            }
+
+            else -> {
+                actionsBar?.apply { visibility = View.VISIBLE }
+                deleteButton.apply {
+                    visibility = if (newMode == StudentDeatilsMode.ADD) View.GONE else View.VISIBLE
+                }
+                editButton.apply { visibility = View.GONE }
+            }
+        }
+        setupInputFields(currentStudent, currentMode)
+    }
+
+    private fun getStudentFromInputs() = StudentModel(
+        nameTextView.text.toString(),
+        Integer.parseInt(idTextView.text.toString()),
+        phoneTextView.text.toString(),
+        addressTextView.text.toString(),
+        checkBox.isChecked
+    )
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            finish()
         }
         return super.onOptionsItemSelected(item)
     }

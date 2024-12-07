@@ -15,12 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stundensmanager.enums.StudentDeatilsMode
 import com.example.stundensmanager.models.StudentModel
+import com.example.stundensmanager.models.StudentsDataHolder
 import com.example.stundensmanager.viewadaper.StudentsAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-    private val students =
-        listOf(StudentModel("Ido Avni", 318800349), StudentModel("Yonatan Yakub", 231787334))
+    private val studentsList by lazy { findViewById<RecyclerView>(R.id.students_list) }
+    private val addStudentButton by lazy { findViewById<FloatingActionButton>(R.id.add_student) }
+    private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +38,21 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
     }
 
+    override fun onResume() {
+        super.onResume()
+        studentsList?.adapter?.notifyDataSetChanged()
+    }
+
     private fun initStudentsList() {
-        findViewById<RecyclerView>(R.id.students_list)?.let {
-            it.layoutManager = LinearLayoutManager(this)
-            it.adapter = StudentsAdapter(students)
-            it.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        studentsList?.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = StudentsAdapter(StudentsDataHolder.studentsData)
+            addItemDecoration(DividerItemDecoration(this@MainActivity, LinearLayoutManager.VERTICAL))
         }
     }
 
     private fun initFab() {
-        findViewById<FloatingActionButton>(R.id.add_student)?.let {
+        addStudentButton?.let {
             it.setOnClickListener {
                 startActivity(
                     Intent(
@@ -56,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun initToolbar() {
-        findViewById<Toolbar>(R.id.toolbar)?.let {
+        toolbar?.let {
             setSupportActionBar(it)
             supportActionBar?.apply {
              title = "Students List"

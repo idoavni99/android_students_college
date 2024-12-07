@@ -12,9 +12,11 @@
         android:supportsRtl="true"
         android:configChanges="orientation|screenSize|keyboardHidden"
         android:theme="@style/Theme.StundensManager"
+        android:windowSoftInputMode="stateVisible|adjustResize"
         tools:targetApi="31">
         <activity
             android:name=".StudentDetailsActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
