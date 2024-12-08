@@ -142,7 +142,7 @@ class StudentDetailsActivity : AppCompatActivity() {
 
     private fun getStudentFromInputs() = StudentModel(
         nameTextView.text.toString(),
-        Integer.parseInt(idTextView.text.toString()),
+        Integer.parseInt(if(idTextView.text.isNullOrEmpty()) "0" else idTextView.text.toString()),
         phoneTextView.text.toString(),
         addressTextView.text.toString(),
         checkBox.isChecked
