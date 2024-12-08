@@ -56,7 +56,7 @@ class StudentDetailsActivity : AppCompatActivity() {
         addressTextView.setText(studentData?.email ?: "")
         checkBox.isChecked = studentData?.checked ?: false
         val focusable =
-            currentMode == StudentDeatilsMode.VIEW
+            currentMode != StudentDeatilsMode.VIEW
 
         idTextView.isFocusableInTouchMode = focusable
         nameTextView.isFocusableInTouchMode = focusable
@@ -74,18 +74,30 @@ class StudentDetailsActivity : AppCompatActivity() {
             handleModeSwitch(StudentDeatilsMode.EDIT)
         }
         cancelButton?.setOnClickListener {
-            finish()
+            currentStudent?.run {
+                handleModeSwitch(StudentDeatilsMode.VIEW)
+            } ?: finish()
         }
         deleteButton?.setOnClickListener {
             currentStudent?.let { student -> StudentsDataHolder.deleteStudent(student) }
             finish()
         }
         saveButton?.setOnClickListener {
-            if (currentMode == StudentDeatilsMode.ADD) {
-                StudentsDataHolder.addStudent(getStudentFromInputs())
-            } else if (currentMode == StudentDeatilsMode.EDIT) {
-                StudentsDataHolder.editStudent(getStudentFromInputs())
+            val studentData = getStudentFromInputs()
+            if (!studentData.validate()) {
+                return@setOnClickListener
             }
+
+            when (currentMode) {
+                StudentDeatilsMode.ADD -> {
+                  StudentsDataHolder.addStudent(studentData)
+                }
+                StudentDeatilsMode.EDIT -> {
+                    StudentsDataHolder.editStudent(studentData)
+                }
+                else -> return@setOnClickListener
+            }
+
             finish()
         }
     }
