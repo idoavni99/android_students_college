@@ -21,7 +21,6 @@ class StudentsAdapter(private val students: List<StudentModel>) :
     class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.student_name)
         val idTextView: TextView = itemView.findViewById(R.id.student_id)
-        val profilePicture: ImageView = itemView.findViewById(R.id.student_image)
         val checkbox: CheckBox = itemView.findViewById(R.id.student_checkbox)
     }
 
