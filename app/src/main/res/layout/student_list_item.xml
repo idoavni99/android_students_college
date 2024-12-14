@@ -12,6 +12,7 @@
         app:layout_constraintTop_toTopOf="@id/student_list_item"
         app:layout_constraintBottom_toBottomOf="@id/student_list_item"
         app:layout_constraintStart_toStartOf="@id/student_list_item"
+        android:src="@drawable/empty_profile_picture"
         />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"

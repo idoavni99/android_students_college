@@ -36,7 +36,6 @@ class StudentsAdapter(private val students: List<StudentModel>) :
         holder.nameTextView.text = currentStudent.name
         holder.idTextView.text = currentStudent.id.toString()
         holder.checkbox.isChecked = currentStudent.checked
-        this.loadStudentImage(currentStudent, holder.profilePicture)
 
         holder.itemView.setOnClickListener {
             Intent(holder.itemView.context, StudentDetailsActivity::class.java).apply {
@@ -51,10 +50,6 @@ class StudentsAdapter(private val students: List<StudentModel>) :
             StudentsDataHolder.editStudent(newStudent, position)
             notifyItemChanged(position)
         }
-    }
-
-    private fun loadStudentImage(currentStudent: StudentModel, profilePictureView: ImageView) {
-        profilePictureView.setImageResource(R.drawable.empty_profile_picture)
     }
 
     override fun getItemCount(): Int {
