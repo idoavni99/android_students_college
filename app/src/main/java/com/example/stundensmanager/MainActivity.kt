@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stundensmanager.enums.StudentDeatilsMode
+import com.example.stundensmanager.enums.StudentsListChange
 import com.example.stundensmanager.models.StudentModel
 import com.example.stundensmanager.models.StudentsDataHolder
 import com.example.stundensmanager.viewadaper.StudentsAdapter
@@ -40,14 +41,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        studentsList?.adapter?.notifyDataSetChanged()
+        studentsList?.adapter?.run {
+            StudentsDataHolder.lastDiff?.let {
+                when (it.first) {
+                    StudentsListChange.INSERTED -> {
+                        notifyItemInserted(it.second)
+                    }
+
+                    StudentsListChange.EDITED -> {
+                        notifyItemChanged(it.second)
+                    }
+
+                    StudentsListChange.DELETED -> {
+                        notifyItemRemoved(it.second)
+                    }
+                }
+                StudentsDataHolder.setDiffCommited()
+            }
+        }
     }
 
     private fun initStudentsList() {
         studentsList?.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = StudentsAdapter(StudentsDataHolder.studentsData)
-            addItemDecoration(DividerItemDecoration(this@MainActivity, LinearLayoutManager.VERTICAL))
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@MainActivity,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 
@@ -62,11 +85,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun initToolbar() {
         toolbar?.let {
             setSupportActionBar(it)
             supportActionBar?.apply {
-             title = "Students List"
+                title = "Students List"
             }
         }
     }

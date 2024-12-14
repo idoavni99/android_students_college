@@ -83,7 +83,7 @@ class StudentDetailsActivity : AppCompatActivity() {
             } ?: finish()
         }
         deleteButton?.setOnClickListener {
-            currentStudent?.let { student -> StudentsDataHolder.deleteStudent(student) }
+            StudentsDataHolder.deleteStudentByIndex(studentIndex)
             finish()
         }
         saveButton?.setOnClickListener {
@@ -94,11 +94,13 @@ class StudentDetailsActivity : AppCompatActivity() {
 
             when (currentMode) {
                 StudentDeatilsMode.ADD -> {
-                  StudentsDataHolder.addStudent(studentData)
+                    StudentsDataHolder.addStudent(studentData)
                 }
+
                 StudentDeatilsMode.EDIT -> {
                     StudentsDataHolder.editStudent(studentData, studentIndex)
                 }
+
                 else -> return@setOnClickListener
             }
 
@@ -146,7 +148,7 @@ class StudentDetailsActivity : AppCompatActivity() {
 
     private fun getStudentFromInputs() = StudentModel(
         nameTextView.text.toString(),
-        Integer.parseInt(if(idTextView.text.isNullOrEmpty()) "0" else idTextView.text.toString()),
+        Integer.parseInt(if (idTextView.text.isNullOrEmpty()) "0" else idTextView.text.toString()),
         phoneTextView.text.toString(),
         addressTextView.text.toString(),
         checkBox.isChecked
