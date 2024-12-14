@@ -15,8 +15,12 @@ import com.example.stundensmanager.models.StudentModel
 import com.example.stundensmanager.models.StudentsDataHolder
 
 class StudentDetailsActivity : AppCompatActivity() {
+    private val studentIndex by lazy {
+        intent.getIntExtra("student_index", -1)
+    }
     private val currentStudent: StudentModel? by lazy {
-        StudentsDataHolder.getStudentByIndex(intent.getIntExtra("student_index", -1))
+        StudentsDataHolder.getStudentByIndex(studentIndex)
+
     }
     private lateinit var currentMode: StudentDeatilsMode
     private val idTextView by lazy { findViewById<EditText>(R.id.student_details_id) }
@@ -93,7 +97,7 @@ class StudentDetailsActivity : AppCompatActivity() {
                   StudentsDataHolder.addStudent(studentData)
                 }
                 StudentDeatilsMode.EDIT -> {
-                    StudentsDataHolder.editStudent(studentData)
+                    StudentsDataHolder.editStudent(studentData, studentIndex)
                 }
                 else -> return@setOnClickListener
             }

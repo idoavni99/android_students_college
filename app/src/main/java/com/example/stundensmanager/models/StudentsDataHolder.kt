@@ -19,8 +19,10 @@ class StudentsDataHolder {
         }
 
         fun deleteStudent(student: StudentModel) {
-            studentsData.remove(student)
+            studentsData.removeIf({ it.id == student.id })
         }
+
+        fun deleteStudentByIndex(index: Int) = studentsData.removeAt(index)
 
         fun getStudentByIndex(index: Int) = studentsData.getOrNull(index);
     }
