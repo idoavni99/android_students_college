@@ -9,13 +9,13 @@ data class StudentModel(
     val email: String? = null,
     val checked: Boolean = false
 ) {
-    fun validate(): Boolean {
+    fun validate(): ValidationResult {
         try {
             require(name.isNotEmpty()) { "Name cannot be empty" }
             require(id > 0) { "ID must be a positive integer" }
-            return true
+            return ValidationResult()
         } catch (e: IllegalArgumentException) {
-            return false
+            return ValidationResult(e)
         }
     }
 }

@@ -1,16 +1,14 @@
 package com.example.stundensmanager.viewadaper
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stundensmanager.R
+import com.example.stundensmanager.SaveStudentActivity
 import com.example.stundensmanager.StudentDetailsActivity
 import com.example.stundensmanager.enums.StudentDeatilsMode
 import com.example.stundensmanager.models.StudentModel
@@ -18,6 +16,7 @@ import com.example.stundensmanager.models.StudentsDataHolder
 
 class StudentsAdapter(private val students: List<StudentModel>) :
     RecyclerView.Adapter<StudentsAdapter.StudentViewHolder>() {
+
     class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.student_name)
         val idTextView: TextView = itemView.findViewById(R.id.student_id)
@@ -39,14 +38,12 @@ class StudentsAdapter(private val students: List<StudentModel>) :
         holder.itemView.setOnClickListener {
             Intent(holder.itemView.context, StudentDetailsActivity::class.java).apply {
                 putExtra("student_index", position)
-                putExtra("mode", StudentDeatilsMode.VIEW)
                 holder.itemView.context.startActivity(this)
             }
         }
 
         holder.checkbox.setOnClickListener {
-            val newStudent = StudentModel(currentStudent.name, currentStudent.id, currentStudent.phone, currentStudent.email, holder.checkbox.isChecked)
-            StudentsDataHolder.editStudent(newStudent, position)
+            StudentsDataHolder.editStudent(currentStudent.copy(checked = holder.checkbox.isChecked), position)
             notifyItemChanged(position)
         }
     }
