@@ -11,18 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.StundensManager"
+        android:theme="@style/Base.Theme.StudentsManager"
         android:windowSoftInputMode="stateVisible|adjustResize"
         tools:targetApi="31">
         <activity
-            android:name=".StudentDetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SaveStudentActivity"
-            android:exported="false"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity
             android:name=".MainActivity"
+            android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

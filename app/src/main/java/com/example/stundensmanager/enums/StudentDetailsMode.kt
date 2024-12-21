@@ -1,5 +1,5 @@
 package com.example.stundensmanager.enums
 
-enum class StudentDeatilsMode {
+enum class StudentDetailsMode {
     ADD,EDIT
 }
