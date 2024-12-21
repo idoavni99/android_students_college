@@ -43,7 +43,10 @@ class StudentsAdapter(private val students: List<StudentModel>) :
         }
 
         holder.checkbox.setOnClickListener {
-            StudentsDataHolder.editStudent(currentStudent.copy(checked = holder.checkbox.isChecked), position)
+            StudentsDataHolder.editStudent(
+                currentStudent.copy(checked = holder.checkbox.isChecked),
+                position
+            )
             notifyItemChanged(position)
         }
     }

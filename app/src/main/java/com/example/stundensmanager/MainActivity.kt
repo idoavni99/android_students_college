@@ -38,18 +38,18 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         studentsList?.adapter?.run {
-            StudentsDataHolder.lastDiff?.let {
-                when (it.first) {
+            StudentsDataHolder.lastDiff?.let { (changeType, changedPosition) ->
+                when (changeType) {
                     StudentsListChange.INSERTED -> {
-                        notifyItemInserted(it.second)
+                        notifyItemInserted(changedPosition)
                     }
 
                     StudentsListChange.EDITED -> {
-                        notifyItemChanged(it.second)
+                        notifyItemChanged(changedPosition)
                     }
 
                     StudentsListChange.DELETED -> {
-                        notifyItemRemoved(it.second)
+                        notifyItemRemoved(changedPosition)
                     }
                 }
                 StudentsDataHolder.setDiffCommited()
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initStudentsList() {
-        studentsList?.apply {
+        studentsList?.run {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = StudentsAdapter(StudentsDataHolder.getStudentsList())
             addItemDecoration(

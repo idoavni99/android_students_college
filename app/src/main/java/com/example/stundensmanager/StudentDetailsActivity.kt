@@ -2,6 +2,7 @@ package com.example.stundensmanager
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -31,12 +32,12 @@ class StudentDetailsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        currentStudent?.let {
-            idTextView.text = it.id.toString()
-            nameTextView.text = it.name
-            phoneTextView.text = it.phone
-            addressTextView.text = it.email
-            checkBox.isChecked = it.checked
+        currentStudent?.run {
+            idTextView.text = id.toString()
+            nameTextView.text = name
+            phoneTextView.text = phone
+            addressTextView.text = email
+            checkBox.isChecked = checked
         }
         findViewById<Button>(R.id.back_button).setOnClickListener {
             finish()
@@ -48,5 +49,20 @@ class StudentDetailsActivity : AppCompatActivity() {
             })
             finish()
         }
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

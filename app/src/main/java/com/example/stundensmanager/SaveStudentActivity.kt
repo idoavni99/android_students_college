@@ -54,15 +54,17 @@ class SaveStudentActivity : AppCompatActivity() {
 
     private fun setupInputFields(
     ) {
-        idTextView.setText(currentStudent?.id?.toString() ?: "")
-        nameTextView.setText(currentStudent?.name ?: "")
-        phoneTextView.setText(currentStudent?.phone ?: "")
-        addressTextView.setText(currentStudent?.email ?: "")
-        checkBox.isChecked = currentStudent?.checked ?: false
+        currentStudent?.run {
+            idTextView.setText(id.toString())
+            nameTextView.setText(name)
+            phoneTextView.setText(phone)
+            addressTextView.setText(email)
+            checkBox.isChecked = checked
+        }
     }
 
     private fun setupActions() {
-        if(currentMode == StudentDeatilsMode.ADD){
+        if (currentMode == StudentDeatilsMode.ADD) {
             deleteButton.isVisible = false
         }
 
