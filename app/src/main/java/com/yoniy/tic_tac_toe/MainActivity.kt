@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
     private fun displayTurnPlayerText(turnPlayer: Player) {
         playerTurnDisplay.text = "${turnPlayer.name}'s turn"
         playerTurnDisplay.setTextColor(turnPlayer.color)
-        playerTurnDisplay.visibility = View.VISIBLE
+        playerTurnDisplay.isVisible = View.VISIBLE
     }
 
     private fun getGameState(

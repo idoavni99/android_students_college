@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.stundensmanager"
+    namespace = "com.yoniy.tic_tac_toe"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.stundensmanager"
-        minSdk = 24
+        applicationId = "com.yoniy.tic_tac_toe"
+        minSdk = 34
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -36,12 +36,12 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.gridlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
