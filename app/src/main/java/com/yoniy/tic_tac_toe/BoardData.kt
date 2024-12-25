@@ -44,10 +44,8 @@ class BoardData(private val boardSpots: List<BoardSpot>) {
 
     fun checkForVictory(player: Player): VictoryVector? {
         return victoryVectors
-            .asIterable()
             .find { victoryVector ->
                 victoryVector.boardSpots
-                    .asIterable()
                     .all { boardSpot -> boardSpot.player == player.id }
             }
     }

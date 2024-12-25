@@ -2,7 +2,6 @@ package com.yoniy.tic_tac_toe
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,27 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
-private const val TAG = "MainActivity"
+import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
     private lateinit var gridSpotsViews: List<ImageView>
     private lateinit var playButton: Button
     private lateinit var playerTurnDisplay: TextView
-    private lateinit var gameNameTitle: TextView
+    private val gameNameTitle: TextView by lazy { findViewById(R.id.gameNameView) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        gameNameTitle = findViewById(R.id.gameNameView)
         gridSpotsViews = getGridSpotViewRefs()
+        initGridSpotStyles()
+
         playerTurnDisplay = findViewById(R.id.playerTurnDisplay)
         playButton = findViewById(R.id.playButton)
 
         playButton.setOnClickListener {
-            playButton.visibility = View.GONE
+            playButton.isVisible = false
             playGame()
         }
 
@@ -65,12 +64,11 @@ class MainActivity : AppCompatActivity() {
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
         val gridSpotColor =
-            if (isNightMode) getResourcesColor(R.color.black) else getResourcesColor(R.color.light_theme_grey)
+            if (isNightMode) getResourcesColor(R.color.dark_theme_grey) else getResourcesColor(R.color.light_theme_grey)
 
 
-        gridSpotsViews.forEach {
-            it.setImageDrawable(null)
-            it.setBackgroundColor(gridSpotColor)
+        gridSpotsViews.forEach { gridSpot ->
+            gridSpot.setBackgroundColor(gridSpotColor)
         }
     }
 
@@ -79,14 +77,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun playGame() {
-        initGridSpotStyles()
+        gridSpotsViews.forEach { gridSpot ->
+            gridSpot.setImageDrawable(null)
+        }
+
         val players = listOf(
             Player(1, R.drawable.red_x, getResourcesColor(R.color.red), "Player One"),
             Player(2, R.drawable.blue_o, getResourcesColor(R.color.blue), "Player Two")
         )
 
         val boardData = BoardData(
-            gridSpotsViews.asIterable().mapIndexed { spotPlace, _ ->
+            List(gridSpotsViews.size) { spotPlace ->
                 BoardSpot(spotPlace)
             }.toList()
         )
@@ -127,8 +128,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         playButton.text = "PLAY AGAIN?"
-        playButton.visibility = View.VISIBLE
-        gridSpotsViews.asIterable().forEach { gridSpot -> gridSpot.isClickable = false }
+        playButton.isVisible = true
+        gridSpotsViews.forEach { gridSpot -> gridSpot.isClickable = false }
     }
 
     private fun handleVictory(turnPlayer: Player) {
@@ -142,13 +143,11 @@ class MainActivity : AppCompatActivity() {
     private fun displayTurnPlayerText(turnPlayer: Player) {
         playerTurnDisplay.text = "${turnPlayer.name}'s turn"
         playerTurnDisplay.setTextColor(turnPlayer.color)
-        playerTurnDisplay.isVisible = View.VISIBLE
+        playerTurnDisplay.isVisible = true
     }
 
     private fun getGameState(
-        numMoves: Int,
-        turnPlayer: Player,
-        boardData: BoardData
+        numMoves: Int, turnPlayer: Player, boardData: BoardData
     ): GameState {
         val leastAmountOfMoves = 4
 
@@ -158,17 +157,12 @@ class MainActivity : AppCompatActivity() {
 
         val victoryVector = boardData.checkForVictory(turnPlayer)
 
-        if (victoryVector != null) {
-            return GameState.VICTORY
-        }
+        return victoryVector?.let { GameState.VICTORY }
+            ?: run {
+                boardData.filterOutInvalidVictoryVectors()
 
-        boardData.filterOutInvalidVictoryVectors()
-
-        if (boardData.isTie()) {
-            return GameState.TIE
-        }
-
-        return GameState.IN_PROGRESS
+                if (boardData.isTie()) GameState.TIE else GameState.IN_PROGRESS
+            }
     }
 
 }

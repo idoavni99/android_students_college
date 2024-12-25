@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.yoniy.tic_tac_toe"
-        minSdk = 34
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
