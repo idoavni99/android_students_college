@@ -13,9 +13,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var gridSpotsViews: List<ImageView>
-    private lateinit var playButton: Button
-    private lateinit var playerTurnDisplay: TextView
+    private val gridSpotsViews: List<ImageView> by lazy { getGridSpotViewRefs() }
+    private val playButton: Button by lazy { findViewById(R.id.playButton) }
+    private val playerTurnDisplay: TextView by lazy { findViewById(R.id.playerTurnDisplay) }
     private val gameNameTitle: TextView by lazy { findViewById(R.id.gameNameView) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +23,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        gridSpotsViews = getGridSpotViewRefs()
         initGridSpotStyles()
-
-        playerTurnDisplay = findViewById(R.id.playerTurnDisplay)
-        playButton = findViewById(R.id.playButton)
 
         playButton.setOnClickListener {
             playButton.isVisible = false
