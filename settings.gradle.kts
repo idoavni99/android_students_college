@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Stundens Manager"
+rootProject.name = "Tic-Tac-Toe"
 include(":app")
+ 

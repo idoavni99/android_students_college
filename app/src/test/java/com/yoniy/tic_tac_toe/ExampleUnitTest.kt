@@ -1,4 +1,4 @@
-package com.example.stundensmanager
+package com.yoniy.tic_tac_toe
 
 import org.junit.Test
 
